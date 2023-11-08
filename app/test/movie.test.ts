@@ -33,9 +33,15 @@ describe( 'Movie Lobby API Test', () => {
       rating: 9.2,
       streamingLink: 'https://www.abcd.com/24',
     };
+    // Test invalid access
     let resp = await request( app ).post( '/movies' ).send( movie );
     expect( resp.statusCode ).toBe( 401 );
 
+    // Test insufficient permission
+    resp = await request( app ).post( '/movies' ).set( 'Authorization', `Bearer ${generateToken( 'user1', UserRoleEnum.USER )}` ).send( movie );
+    expect( resp.statusCode ).toBe( 403 );
+
+    // Test valid access
     resp = await request( app ).post( '/movies' ).set( 'Authorization', `Bearer ${generateToken( 'user1', UserRoleEnum.ADMIN )}` ).send( movie );
     expect( resp.statusCode ).toBe( 201 );
     expect( resp.body ).toMatchObject( movie );
