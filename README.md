@@ -1,7 +1,7 @@
 ## Movie Lobby API  
 Follow the below steps to setup the api.  
 
-1. Create a `.env` file with the following  
+1. Create a `.env` file in the project root folder i.e. alongside `package.json` with the following  
 ```
 PORT=8118
 JWT_SECRET=1234
