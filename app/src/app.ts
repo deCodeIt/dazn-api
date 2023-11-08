@@ -79,9 +79,6 @@ app.use( '/docs', swaggerUi.serve, swaggerUi.setup( swaggerSpec ) );
  *         - rating
  *         - streamingLink
  *       properties:
- *         id:
- *           type: integer
- *           description: Auto generated movie id
  *         title:
  *           type: string
  *           description: The title of the movie
@@ -136,9 +133,88 @@ app.use( '/docs', swaggerUi.serve, swaggerUi.setup( swaggerSpec ) );
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Movie'
+ *       400:
+ *         description: Malformed Authorization token
+ *       401:
+ *         description: Missing Authorization token
+ *       403:
+ *         description: Unauthorized to access the resource
  *       500:
  *         description: Internal Server Error
- *
+ * /search:
+ *   get:
+ *     summary: Search for movies
+ *     tags: [Movie]
+ *     description: Search from movies w.r.t to title or genre in the lobby
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         description: The movie title or genre to search for
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully searched the movies
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Movie'
+ *       500:
+ *         description: Internal Server Error
+ * /movies/{id}:
+ *   put:
+ *     summary: Update a movie
+ *     tags: [Movie]
+ *     description: Update a movie in the lobby
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: The movie id that needs to be updated.
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/MovieInput'
+ *     responses:
+ *       201:
+ *         description: Successfully updated the movie
+ *       400:
+ *         description: Malformed Authorization token
+ *       401:
+ *         description: Missing Authorization token
+ *       403:
+ *         description: Unauthorized to access the resource
+ *       500:
+ *         description: Internal Server Error
+ *   delete:
+ *     summary: Delete a movie
+ *     tags: [Movie]
+ *     description: Delete a movie from the lobby
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: The movie id that needs to be deleted.
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       201:
+ *         description: Successfully deleted the movie
+ *       400:
+ *         description: Malformed Authorization token
+ *       401:
+ *         description: Missing Authorization token
+ *       403:
+ *         description: Unauthorized to access the resource
+ *       500:
+ *         description: Internal Server Error
  */
 app.get( '/movies', async ( req, res ) => {
   try {
